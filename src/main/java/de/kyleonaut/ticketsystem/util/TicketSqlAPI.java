@@ -48,5 +48,9 @@ public class TicketSqlAPI {
         return (Date) TicketSystem.getCon().get("SElECT datum_abgabe FROM ticketsytem_tickets WHERE index = " + index, "datum_abgabe").get(0);
     }
 
+    public static Player getScoreByModerator(Player moderator) throws SQLException {
+        return Bukkit.getPlayer(UUID.fromString((String) TicketSystem.getCon().get("SELECT score FROM ticketsystem_stats WHERE moderator_uuid = " + moderator.getUniqueId() + "", "score").get(0)));
+    }
+
 
 }
