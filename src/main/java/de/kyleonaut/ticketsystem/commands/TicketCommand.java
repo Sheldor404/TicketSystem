@@ -13,6 +13,7 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 public class TicketCommand implements CommandExecutor {
@@ -27,11 +28,11 @@ public class TicketCommand implements CommandExecutor {
             Player player = (Player) sender;
                 Builder builder = new Builder();
                 Inventory ticketinv = Bukkit.createInventory(null, InventoryType.HOPPER,"Kategorien");
-                ticketinv.addItem(builder.createGlassPane("red","§ePlot verschieben",1,"§7➥ Beantrage eine Plotverschiebung"));
-                ticketinv.addItem(builder.createGlassPane("white","§ePlot melden",1,"§7➥ Melde ein Plot"));
-                ticketinv.addItem(builder.createGlassPane("lightblue","§ePlot mergen",1,"§7➥ Beantrage ein Plotmerge"));
-                ticketinv.addItem(builder.createGlassPane("yellow","§ePlot beantragen",1,"§7➥ Beantrage ein Plot"));
-                ticketinv.addItem(builder.createGlassPane("lime","§eEigenes Ticket",1,"§7➥ Erstelle dein eigenes Ticket"));
+                ticketinv.addItem(builder.createGlassPane(Color.RED","§ePlot verschieben",1,"§7➥ Beantrage eine Plotverschiebung"));
+                ticketinv.addItem(builder.createGlassPane(Color.WHITE,"§ePlot melden",1,"§7➥ Melde ein Plot"));
+                ticketinv.addItem(builder.createGlassPane(Color.LIGHT_BLUE,"§ePlot mergen",1,"§7➥ Beantrage ein Plotmerge"));
+                ticketinv.addItem(builder.createGlassPane(Color.YELLOW,"§ePlot beantragen",1,"§7➥ Beantrage ein Plot"));
+                ticketinv.addItem(builder.createGlassPane(,"§eEigenes Ticket",1,"§7➥ Erstelle dein eigenes Ticket"));
                 player.openInventory(ticketinv);
         }
         return false;
