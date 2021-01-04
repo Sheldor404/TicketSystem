@@ -19,6 +19,8 @@ public class TicketCommand implements CommandExecutor {
 
     private static ArrayList<Player> ticketPlayerCooldownArrayList = new ArrayList<>();
 
+
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if(sender instanceof Player){

@@ -10,6 +10,25 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class Builder {
+    enum Color{
+        WHITE,
+        ORANGE,
+        MAGENTA,
+        LIGHT_BLUE,
+        YELLOW,
+        LIME_GREEN,
+        PINK,
+        GRAY,
+        LIGHT_GRAY,
+        CYAN,
+        PURPLE,
+        BLUE,
+        BROWN,
+        GREEN,
+        RED,
+        BLACK
+    }
+
     public ItemStack createItem(Material itemMaterial) {
         return new ItemStack(itemMaterial);
     }
@@ -48,57 +67,56 @@ public class Builder {
         return itemStack;
     }
 
-    public ItemStack createGlassPane(String color, String itemName, int itemAmount, ArrayList itemLore) {
+    public ItemStack createGlassPane(Color color, String itemName, int itemAmount, ArrayList itemLore) {
         Material itemMaterial = Material.STAINED_GLASS_PANE;
         ItemStack itemStack = null;
-        color = color.toLowerCase();
         switch (color){
-            case "white":
+            case WHITE:
                 itemStack = new ItemStack(itemMaterial, itemAmount,(short) 0);
                 break;
-            case "orange":
+            case ORANGE:
                 itemStack = new ItemStack(itemMaterial, itemAmount,(short) 1);
                 break;
-            case "magenta":
+            case MAGENTA:
                 itemStack = new ItemStack(itemMaterial, itemAmount,(short) 2);
                 break;
-            case "lightblue":
+            case LIGHT_BLUE:
                 itemStack = new ItemStack(itemMaterial, itemAmount,(short) 3);
                 break;
-            case "yellow":
+            case YELLOW:
                 itemStack = new ItemStack(itemMaterial, itemAmount,(short) 4);
                 break;
-            case "lime":
+            case LIME_GREEN:
                 itemStack = new ItemStack(itemMaterial, itemAmount,(short) 5);
                 break;
-            case "pink":
+            case PINK:
                 itemStack = new ItemStack(itemMaterial, itemAmount,(short) 6);
                 break;
-            case "gray":
+            case GRAY:
                 itemStack = new ItemStack(itemMaterial, itemAmount,(short) 7);
                 break;
-            case "lightgray":
+            case LIGHT_GRAY:
                 itemStack = new ItemStack(itemMaterial, itemAmount,(short) 8);
                 break;
-            case "cyan":
+            case CYAN:
                 itemStack = new ItemStack(itemMaterial, itemAmount,(short) 9);
                 break;
-            case "purple":
+            case PURPLE:
                 itemStack = new ItemStack(itemMaterial, itemAmount,(short) 10);
                 break;
-            case "blue":
+            case BLUE:
                 itemStack = new ItemStack(itemMaterial, itemAmount,(short) 11);
                 break;
-            case "brown":
+            case BROWN:
                 itemStack = new ItemStack(itemMaterial, itemAmount,(short) 12);
                 break;
-            case "green":
+            case GREEN:
                 itemStack = new ItemStack(itemMaterial, itemAmount,(short) 13);
                 break;
-            case "red":
+            case RED:
                 itemStack = new ItemStack(itemMaterial, itemAmount,(short) 14);
                 break;
-            case "black":
+            case BLACK:
                 itemStack = new ItemStack(itemMaterial, itemAmount,(short) 15);
                 break;
             default:
@@ -112,57 +130,56 @@ public class Builder {
         return itemStack;
     }
 
-    public ItemStack createGlassPane(String color, String itemName, int itemAmount, String itemLore) {
+    public ItemStack createGlassPane(Color color, String itemName, int itemAmount, String itemLore) {
         Material itemMaterial = Material.STAINED_GLASS_PANE;
         ItemStack itemStack = null;
-        color = color.toLowerCase();
         switch (color){
-            case "white":
+            case WHITE:
                 itemStack = new ItemStack(itemMaterial, itemAmount,(short) 0);
                 break;
-            case "orange":
+            case ORANGE:
                 itemStack = new ItemStack(itemMaterial, itemAmount,(short) 1);
                 break;
-            case "magenta":
+            case MAGENTA:
                 itemStack = new ItemStack(itemMaterial, itemAmount,(short) 2);
                 break;
-            case "lightblue":
+            case LIGHT_BLUE:
                 itemStack = new ItemStack(itemMaterial, itemAmount,(short) 3);
                 break;
-            case "yellow":
+            case YELLOW:
                 itemStack = new ItemStack(itemMaterial, itemAmount,(short) 4);
                 break;
-            case "lime":
+            case LIME_GREEN:
                 itemStack = new ItemStack(itemMaterial, itemAmount,(short) 5);
                 break;
-            case "pink":
+            case PINK:
                 itemStack = new ItemStack(itemMaterial, itemAmount,(short) 6);
                 break;
-            case "gray":
+            case GRAY:
                 itemStack = new ItemStack(itemMaterial, itemAmount,(short) 7);
                 break;
-            case "lightgray":
+            case LIGHT_GRAY:
                 itemStack = new ItemStack(itemMaterial, itemAmount,(short) 8);
                 break;
-            case "cyan":
+            case CYAN:
                 itemStack = new ItemStack(itemMaterial, itemAmount,(short) 9);
                 break;
-            case "purple":
+            case PURPLE:
                 itemStack = new ItemStack(itemMaterial, itemAmount,(short) 10);
                 break;
-            case "blue":
+            case BLUE:
                 itemStack = new ItemStack(itemMaterial, itemAmount,(short) 11);
                 break;
-            case "brown":
+            case BROWN:
                 itemStack = new ItemStack(itemMaterial, itemAmount,(short) 12);
                 break;
-            case "green":
+            case GREEN:
                 itemStack = new ItemStack(itemMaterial, itemAmount,(short) 13);
                 break;
-            case "red":
+            case RED:
                 itemStack = new ItemStack(itemMaterial, itemAmount,(short) 14);
                 break;
-            case "black":
+            case BLACK:
                 itemStack = new ItemStack(itemMaterial, itemAmount,(short) 15);
                 break;
             default:
