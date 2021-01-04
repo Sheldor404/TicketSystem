@@ -14,18 +14,14 @@ public class inventory {
     static Material empty = Material.STAINED_GLASS_PANE;
 
     public static void openmaingui(Player p ,String Guiname) {
-        Inventory inventory = Bukkit.createInventory(null, 27, Guiname);
         Builder builder = new Builder();
         Inventory ticketinv = Bukkit.createInventory(null, InventoryType.HOPPER,"Kategorien");
-        ticketinv.addItem(builder.createGlassPane("red","§ePlot verschieben",1,"§7➥ Beantrage eine Plotverschiebung"));
-        ticketinv.addItem(builder.createGlassPane("white","§ePlot melden",1,"§7➥ Melde ein Plot"));
-        ticketinv.addItem(builder.createGlassPane("lightblue","§ePlot mergen",1,"§7➥ Beantrage ein Plotmerge"));
-        ticketinv.addItem(builder.createGlassPane("yellow","§ePlot beantragen",1,"§7➥ Beantrage ein Plot"));
-        ticketinv.addItem(builder.createGlassPane("lime","§eEigenes Ticket",1,"§7➥ Erstelle dein eigenes Ticket"));
+        ticketinv.addItem(builder.createGlassPane(Builder.Color.RED,"§ePlot verschieben",1,"§7➥ Beantrage eine Plotverschiebung"));
+        ticketinv.addItem(builder.createGlassPane(Builder.Color.WHITE,"§ePlot melden",1,"§7➥ Melde ein Plot"));
+        ticketinv.addItem(builder.createGlassPane(Builder.Color.YELLOW,"§ePlot mergen",1,"§7➥ Beantrage ein Plotmerge"));
+        ticketinv.addItem(builder.createGlassPane(Builder.Color.BLUE,"§ePlot beantragen",1,"§7➥ Beantrage ein Plot"));
+        ticketinv.addItem(builder.createGlassPane(Builder.Color.LIME_GREEN,"§eEigenes Ticket",1,"§7➥ Erstelle dein eigenes Ticket"));
         p.openInventory(ticketinv);
-
-
-        p.openInventory(inventory);
     }
 
 
