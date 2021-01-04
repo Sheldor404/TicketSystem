@@ -10,7 +10,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class Builder {
-    enum Color{
+
+    public enum Color{
         WHITE,
         ORANGE,
         MAGENTA,
