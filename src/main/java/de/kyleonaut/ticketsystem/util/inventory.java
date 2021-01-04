@@ -13,7 +13,7 @@ public class inventory {
     static int id = 15;
     static Material empty = Material.STAINED_GLASS_PANE;
 
-    public static void openmaingui(Player p ,String Guiname) {
+    public static void openKategorienGui(Player p) {
         Builder builder = new Builder();
         Inventory ticketinv = Bukkit.createInventory(null, InventoryType.HOPPER,"Kategorien");
         ticketinv.addItem(builder.createGlassPane(Builder.Color.RED,"§ePlot verschieben",1,"§7➥ Beantrage eine Plotverschiebung"));
