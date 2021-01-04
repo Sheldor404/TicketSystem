@@ -1,3 +1,6 @@
 name: Ticketsystem
 version: 1
 main: de.kyleonaut.ticketsystem.TicketSystem
+commands:
+  ticket:
+     description: Create a new Ticket
