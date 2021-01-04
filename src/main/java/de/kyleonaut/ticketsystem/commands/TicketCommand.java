@@ -1,6 +1,6 @@
 package de.kyleonaut.ticketsystem.commands;
 
-import de.kyleonaut.ticketsystem.util.inventory;
+import de.kyleonaut.ticketsystem.util.InventoryHolder;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -13,7 +13,7 @@ public class TicketCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if(sender instanceof Player){
             Player player = (Player) sender;
-            inventory.openKategorienGui(player);
+            InventoryHolder.openKategorienGui(player);
         }
         return false;
     }
