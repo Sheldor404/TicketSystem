@@ -38,7 +38,7 @@ public class TicketSystem extends JavaPlugin {
         /*con = new MySqlClass();
         try {
 
-            con.execute("CREATE TABLE IF NOT EXISTS ticketsystem_tickets(index INT(10) AUTO_INCREMENT,uuid_player VARCHAR(60), ticket_tpye VARCHAR(25), ticket_args VARCHAR(255),eingangs_datum VARCHAR(70),status VARCHAR(15),moderator_uuid VARCHAR(60), datum_abgabe VARCHAR(70), PRIMARY KEY(index))");
+            con.execute("CREATE TABLE IF NOT EXISTS ticketsystem_tickets(index INT(10) AUTO_INCREMENT,uuid_player VARCHAR(60), ticket_type VARCHAR(25), ticket_args VARCHAR(255),eingangs_datum VARCHAR(70),ticket_status VARCHAR(15),moderator_uuid VARCHAR(60), datum_abgabe VARCHAR(70), PRIMARY KEY(index))");
             con.execute("CREATE TABLE IF NOT EXISTS ticketsystem_stats(moderator_uuid VARCHAR(60) PRIMARY KEY, score INT(10))")
 
         } catch (SQLException e) {
