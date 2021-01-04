@@ -35,5 +35,18 @@ public class TicketSqlAPI {
         return (Date) TicketSystem.getCon().get("SElECT eingangs_datum FROM ticketsytem_tickets WHERE index = " + index, "eingangs_datum").get(0);
     }
 
+    public static Status getTicketStatusByIndex(int index) throws SQLException {
+        return (Status) TicketSystem.getCon().get("SELECT ticket_status FROM ticketsystem_tickets WHERE index = " + index + "", "ticket_status").get(0);
+    }
+
+    public static Player getModeratorByIndex(int index) throws SQLException {
+        UUID player_uuid = UUID.fromString((String) TicketSystem.getCon().get("SELECT moderator_uuid FROM ticketsystem_tickets WHERE index = " + index + "", "moderator_uuid").get(0));
+        return Bukkit.getPlayer(player_uuid);
+    }
+
+    public static Date getDatumAbgabeByIndex(int index) throws SQLException {
+        return (Date) TicketSystem.getCon().get("SElECT datum_abgabe FROM ticketsytem_tickets WHERE index = " + index, "datum_abgabe").get(0);
+    }
+
 
 }
