@@ -54,7 +54,7 @@ public class InventoryHolder {
         inventory.addItem(builder.createHead(targetPlayer, "§e" + targetPlayer.getName(), lore));
         inventory.addItem(builder.createGlassPane(Builder.Color.RED, "§aErledigt & §cAbgelehnt", 1, "§7➥ Klicke um das Ticket zu schließen"));
         inventory.addItem(builder.createGlassPane(Builder.Color.LIME_GREEN, "§aErledigt & Angenommen", 1, "§7➥ Klicke um das Ticket zu schließen"));
-        inventory.addItem(builder.createGlassPane(Builder.Color.YELLOW, "§eAlle Tickets", 1, "§7➥§e Zeige alle Tickets von: " + targetPlayer.getName()));
+        inventory.addItem(builder.createGlassPane(Builder.Color.YELLOW, "§eAlle Tickets", 1, "§7➥§e Zeige alle offnen Tickets von: " + targetPlayer.getName()));
         inventory.addItem(builder.createItem(Material.BARRIER, "§eZurück zum Hauptmenu"));
         p.openInventory(inventory);
     }
@@ -76,6 +76,35 @@ public class InventoryHolder {
             inventory.addItem(builder.createHead(TicketSqlAPI.getPlayerById((Integer) id), "§eTicket von: " + TicketSqlAPI.getPlayerById((Integer) id).getName(), lore));
         }
         filterPlayer.openInventory(inventory);
+    }
+
+    public static void openTicketHistory(Player p) throws SQLException {
+        Builder builder = new Builder();
+        Inventory inventory = Bukkit.createInventory(null, 9 * 6, "Ticket History");
+
+        for (Object id : TicketSqlAPI.getAllTicketIds()) {
+            try {
+                String ticket_type = TicketSqlAPI.getTicketTypeById((Integer) id);
+                String ticket_args = TicketSqlAPI.getArgsById((Integer) id);
+                String eingangs_Datum = TicketSqlAPI.getEingangDatumById((Integer) id);
+                String ticket_status = TicketSqlAPI.getTicketStatusById((Integer) id);
+                String zuständiger_Mod = TicketSqlAPI.getModeratorById((Integer) id).getDisplayName();
+                String abgabe_Datum = TicketSqlAPI.getDatumAbgabeById((Integer) id);
+                ArrayList<String> lore = new ArrayList<>();
+                lore.add("§7➥§e Ticket Type: §7" + ticket_type);
+                lore.add("§7➥§e Ticket Message: §7" + ticket_args);
+                lore.add("§7➥§e Eingangsdatum: §7" + eingangs_Datum);
+                lore.add("§7➥§e Ticket Status: §7" + ticket_status);
+                lore.add("§7➥§e Ticket Nummer: §7" + id);
+                lore.add("§7➥§e Abgabedatum: §7" + abgabe_Datum);
+                lore.add("§7➥§a Zuständiger Moderator: §7" + zuständiger_Mod);
+                inventory.addItem(builder.createHead(TicketSqlAPI.getPlayerById((Integer) id), "§eTicket von: " + TicketSqlAPI.getPlayerById((Integer) id).getName(), lore));
+            } catch (IllegalArgumentException e) {
+
+            }
+
+        }
+        p.openInventory(inventory);
     }
 
 

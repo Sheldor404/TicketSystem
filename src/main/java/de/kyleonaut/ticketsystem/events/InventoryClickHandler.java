@@ -80,6 +80,9 @@ public class InventoryClickHandler implements Listener {
                     InventoryHolder.openMainModerationGui(player);
                     break;
             }
+        } else if (event.getInventory().getTitle().equalsIgnoreCase("Ticket History")) {
+            event.setCancelled(true);
+
         }
     }
 

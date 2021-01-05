@@ -47,7 +47,7 @@ public class TicketSqlAPI {
     }
 
     public static String getDatumAbgabeById(int Id) throws SQLException {
-        return (String) TicketSystem.getCon().get("SElECT datum_abgabe FROM ticketsytem_tickets WHERE id = " + Id, "datum_abgabe").get(0);
+        return (String) TicketSystem.getCon().get("SElECT datum_abgabe FROM ticketsystem_tickets WHERE id = " + Id, "datum_abgabe").get(0);
     }
 
     public static Player getScoreByModerator(Player moderator) throws SQLException {
@@ -60,6 +60,10 @@ public class TicketSqlAPI {
 
     public static ArrayList<Object> getAllOpenTicketIdsByPlayer(Player player) throws SQLException {
         return TicketSystem.getCon().get("SELECT id FROM ticketsystem_tickets WHERE uuid_player = '" + player.getUniqueId() + "' AND ticket_status = 'OFFEN' ", "id");
+    }
+
+    public static ArrayList<Object> getAllTicketIds() throws SQLException {
+        return TicketSystem.getCon().get("SELECT * FROM ticketsystem_tickets ORDER BY id DESC", "id");
     }
 
 
