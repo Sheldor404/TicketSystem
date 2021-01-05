@@ -1,10 +1,13 @@
 package de.kyleonaut.ticketsystem.util;
 
 import org.bukkit.Material;
+import org.bukkit.SkullType;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -202,6 +205,33 @@ public class Builder {
         meta.addItemFlags(new ItemFlag[]{itemFlag});
         itemStack.setItemMeta(meta);
         return itemStack;
+    }
+
+    public ItemStack createHead(Player player) {
+        ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (short) SkullType.PLAYER.ordinal());
+        SkullMeta meta = (SkullMeta) skull.getItemMeta();
+        meta.setOwner(player.getName());
+        skull.setItemMeta(meta);
+        return skull;
+    }
+
+    public ItemStack createHead(Player player, String displayName) {
+        ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (short) SkullType.PLAYER.ordinal());
+        SkullMeta meta = (SkullMeta) skull.getItemMeta();
+        meta.setOwner(player.getName());
+        meta.setDisplayName(displayName);
+        skull.setItemMeta(meta);
+        return skull;
+    }
+
+    public ItemStack createHead(Player player, String displayName, ArrayList<String> lore) {
+        ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (short) SkullType.PLAYER.ordinal());
+        SkullMeta meta = (SkullMeta) skull.getItemMeta();
+        meta.setOwner(player.getName());
+        meta.setDisplayName(displayName);
+        meta.setLore(lore);
+        skull.setItemMeta(meta);
+        return skull;
     }
 }
 
