@@ -42,9 +42,9 @@ public class InventoryHolder {
                 lore.add("§7➥§e Eingangsdatum: §7" + eingangs_Datum);
                 lore.add("§7➥§e Ticket Status: §7" + ticket_status);
                 lore.add("§7➥§e Ticket Nummer: §7" + id);
-                inventory.addItem(builder.createHead(TicketSqlAPI.getPlayerById((Integer) id).getName(), "§eTicket von: " + TicketSqlAPI.getPlayerById((Integer) id).getName(), lore));
+                inventory.addItem(builder.createHead(TicketSqlAPI.getPlayerById((Integer) id), "§eTicket von: " + TicketSqlAPI.getPlayerById((Integer) id).getName(), lore));
             } catch (Exception e) {
-                e.printStackTrace();
+
             }
         }
         inventory.setItem(53, builder.createItem(Material.BOOK, "§eZum Archiv"));
@@ -56,7 +56,7 @@ public class InventoryHolder {
         Inventory inventory = Bukkit.createInventory(null, InventoryType.HOPPER, "Ticket Verwaltung");
         ArrayList<String> lore = new ArrayList<>();
         lore.add("§7➥ §eTicket Nummer: " + event.getCurrentItem().getItemMeta().getLore().get(4).replace("§7➥§e Ticket Nummer: §7", ""));
-        inventory.addItem(builder.createHead(targetPlayer.getName(), "§e" + targetPlayer.getName(), lore));
+        inventory.addItem(builder.createHead(targetPlayer, "§e" + targetPlayer, lore));
         inventory.addItem(builder.createGlassPane(Builder.Color.RED, "§aErledigt & §cAbgelehnt", 1, "§7➥ Klicke um das Ticket zu schließen"));
         inventory.addItem(builder.createGlassPane(Builder.Color.LIME_GREEN, "§aErledigt & Angenommen", 1, "§7➥ Klicke um das Ticket zu schließen"));
         inventory.addItem(builder.createGlassPane(Builder.Color.YELLOW, "§eAlle Tickets", 1, "§7➥§e Zeige alle offnen Tickets von: " + targetPlayer.getName()));
@@ -79,9 +79,9 @@ public class InventoryHolder {
                 lore.add("§7➥§e Eingangsdatum: §7" + eingangs_Datum);
                 lore.add("§7➥§e Ticket Status: §7" + ticket_status);
                 lore.add("§7➥§e Ticket Nummer: §7" + id);
-                inventory.addItem(builder.createHead(TicketSqlAPI.getPlayerById((Integer) id).getName(), "§eTicket von: " + TicketSqlAPI.getPlayerById((Integer) id).getName(), lore));
+                inventory.addItem(builder.createHead(TicketSqlAPI.getPlayerById((Integer) id), "§eTicket von: " + TicketSqlAPI.getPlayerById((Integer) id).getName(), lore));
             } catch (Exception e) {
-                e.printStackTrace();
+
             }
 
         }
@@ -108,9 +108,9 @@ public class InventoryHolder {
                     lore.add("§7➥§e Ticket Nummer: §7" + id);
                     lore.add("§7➥§e Abgabedatum: §7" + abgabe_Datum);
                     lore.add("§7➥§a Zuständiger Moderator: §7" + zuständiger_Mod);
-                    inventory.addItem(builder.createHead(TicketSqlAPI.getPlayerById((Integer) id).getName(), "§eTicket von: " + TicketSqlAPI.getPlayerById((Integer) id).getName(), lore));
+                    inventory.addItem(builder.createHead(TicketSqlAPI.getPlayerById((Integer) id), "§eTicket von: " + TicketSqlAPI.getPlayerById((Integer) id).getName(), lore));
                 } catch (Exception e) {
-                    e.printStackTrace();
+
                 }
             } catch (IllegalArgumentException e) {
 

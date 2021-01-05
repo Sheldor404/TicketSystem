@@ -22,8 +22,7 @@ public class TicketSqlAPI {
 
     public static Player getPlayerById(int Id) throws SQLException {
         UUID player_uuid = UUID.fromString((String) TicketSystem.getCon().get("SELECT uuid_player FROM ticketsystem_tickets WHERE id = " + Id + "", "uuid_player").get(0));
-        Bukkit.getServer().broadcastMessage(Bukkit.getOfflinePlayer(player_uuid).getName());
-        return Bukkit.getPlayer(Bukkit.getOfflinePlayer(player_uuid).getName());
+        return Bukkit.getServer().getOfflinePlayer(player_uuid).getPlayer();
     }
 
     public static String getTicketTypeById(int Id) throws SQLException {
@@ -44,8 +43,7 @@ public class TicketSqlAPI {
 
     public static Player getModeratorById(int Id) throws SQLException {
         UUID player_uuid = UUID.fromString((String) TicketSystem.getCon().get("SELECT moderator_uuid FROM ticketsystem_tickets WHERE id = " + Id + "", "moderator_uuid").get(0));
-        Bukkit.getServer().broadcastMessage(Bukkit.getOfflinePlayer(player_uuid).getName());
-        return Bukkit.getPlayer(Bukkit.getOfflinePlayer(player_uuid).getName());
+        return Bukkit.getServer().getOfflinePlayer(player_uuid).getPlayer();
 
     }
 
