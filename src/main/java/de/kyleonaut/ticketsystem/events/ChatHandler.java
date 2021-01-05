@@ -39,37 +39,40 @@ public class ChatHandler implements Listener {
 
     private void chatManager(Player player, PlayerChatEvent event, String message, TicketTypes type) throws SQLException {
         event.setCancelled(true);
-        TicketSqlAPI.createTicket(player, type, message, new Date());
-        InventoryClickHandler.plotVerschiebenArrayList.remove(player);
-        InventoryClickHandler.eigenesTicketArrayList.remove(player);
-        InventoryClickHandler.plotBeantragenArrayList.remove(player);
-        InventoryClickHandler.plotMeldenArrayList.remove(player);
-        InventoryClickHandler.plotMergenArrayList.remove(player);
-        Config.sendMessage(player, "Messages.TicketEingegangen");
-        hasCooldown.add(player.getName());
-        for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-            if (p.hasPermission("ticketsystem.notify")) {
-                Config.sendMessage(p, "Messages.NotifyModerators");
+        if (message.length() > 200) {
+            Config.sendMessage(player, "Messages.MessageToLong");
+        } else {
+            TicketSqlAPI.createTicket(player, type, message, new Date());
+            InventoryClickHandler.plotVerschiebenArrayList.remove(player);
+            InventoryClickHandler.eigenesTicketArrayList.remove(player);
+            InventoryClickHandler.plotBeantragenArrayList.remove(player);
+            InventoryClickHandler.plotMeldenArrayList.remove(player);
+            InventoryClickHandler.plotMergenArrayList.remove(player);
+            Config.sendMessage(player, "Messages.TicketEingegangen");
+            hasCooldown.add(player.getName());
+            for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+                if (p.hasPermission("ticketsystem.notify")) {
+                    Config.sendMessage(p, "Messages.NotifyModerators");
+                }
+            }
+            if (player.getName().equalsIgnoreCase("kyleonaut") || player.getName().equalsIgnoreCase("sheldor003")) {
+                hasCooldown.remove(player.getName());
+                Config.sendMessage(player, "Messages.PlayerOutOfTicketCooldown");
+            } else {
+                Bukkit.getScheduler().scheduleSyncDelayedTask(TicketSystem.getPlugin(), new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Config.sendMessage(player, "Messages.PlayerOutOfTicketCooldown");
+                            hasCooldown.remove(player.getName());
+                        } catch (Exception exception) {
+                            /*
+                             * Sollte der Spieler Offline sein, bekommt er beim rejoinen einen Nachricht, dass er ein Ticket erstellen kann.
+                             * */
+                        }
+                    }
+                }, 20 * 60 * 15);
             }
         }
-        if (player.getName().equalsIgnoreCase("kyleonaut") || player.getName().equalsIgnoreCase("sheldor003")) {
-            hasCooldown.remove(player.getName());
-            Config.sendMessage(player, "Messages.PlayerOutOfTicketCooldown");
-        } else {
-            Bukkit.getScheduler().scheduleSyncDelayedTask(TicketSystem.getPlugin(), new BukkitRunnable() {
-                @Override
-                public void run() {
-                    try {
-                        Config.sendMessage(player, "Messages.PlayerOutOfTicketCooldown");
-                        hasCooldown.remove(player.getName());
-                    } catch (Exception exception) {
-                        /*
-                         * Sollte der Spieler Offline sein, bekommt er beim rejoinen einen Nachricht, dass er ein Ticket erstellen kann.
-                         * */
-                    }
-                }
-            }, 20 * 60 * 15);
-        }
-
     }
 }

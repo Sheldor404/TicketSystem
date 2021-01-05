@@ -44,6 +44,7 @@ public class Config {
         cfg.addDefault("Messages.NoPermission", " §7Du hast §ckeine §7Rechte um diesen Befehl auszuführen.");
         cfg.addDefault("Messages.NotifyModerators", " §7Ein neues Ticket wurde erstellt, öffne die Übersicht mit §e/ticketmod.");
         cfg.addDefault("Messages.NotifyPlayer", " §7Dein Ticket wurde bearbeitet und {ticket_status}.");
+        cfg.addDefault("Messages.MessageToLong", " §7Deine Nachricht ist zu lang!");
         /*
          * Settings
          * */
