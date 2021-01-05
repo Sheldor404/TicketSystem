@@ -3,8 +3,16 @@ package de.kyleonaut.ticketsystem.util;
 import de.kyleonaut.ticketsystem.TicketSystem;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
+import org.apache.commons.io.IOUtils;
 
+
+import java.io.IOException;
+import java.net.URL;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
@@ -66,6 +74,4 @@ public class TicketSqlAPI {
     public static ArrayList<Object> getAllTicketIds() throws SQLException {
         return TicketSystem.getCon().get("SELECT * FROM ticketsystem_tickets ORDER BY id DESC", "id");
     }
-
-
 }
