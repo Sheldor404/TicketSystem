@@ -41,6 +41,10 @@ public class ChatHandler implements Listener {
         event.setCancelled(true);
         TicketSqlAPI.createTicket(player, type, message, new Date());
         InventoryClickHandler.plotVerschiebenArrayList.remove(player);
+        InventoryClickHandler.eigenesTicketArrayList.remove(player);
+        InventoryClickHandler.plotBeantragenArrayList.remove(player);
+        InventoryClickHandler.plotMeldenArrayList.remove(player);
+        InventoryClickHandler.plotMergenArrayList.remove(player);
         Config.sendMessage(player, "Messages.TicketEingegangen");
         hasCooldown.add(player.getName());
         for (Player p : Bukkit.getServer().getOnlinePlayers()) {

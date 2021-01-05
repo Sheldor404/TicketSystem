@@ -19,12 +19,12 @@ public class HandlePlayerJoin implements Listener {
         if (InventoryClickHandler.offlineAngenommen.contains(player)) {
             InventoryClickHandler.offlineAngenommen.remove(player);
             String msg = Config.getCfg().getString("Messages.NotifyPlayer").replace("{ticket_status}", "§aangenommen");
-            player.sendMessage(Config.getCfg().getString("Settings.Prefix.Prefix") + msg);
+            player.sendMessage(Config.getCfg().getString("Settings.Prefix") + msg);
         }
         if (InventoryClickHandler.offlineAbgelehnt.contains(player)) {
             InventoryClickHandler.offlineAbgelehnt.remove(player);
             String msg = Config.getCfg().getString("Messages.NotifyPlayer").replace("{ticket_status}", "§cabgelehnt");
-            player.sendMessage(Config.getCfg().getString("Settings.Prefix.Prefix") + msg);
+            player.sendMessage(Config.getCfg().getString("Settings.Prefix") + msg);
         }
 
     }

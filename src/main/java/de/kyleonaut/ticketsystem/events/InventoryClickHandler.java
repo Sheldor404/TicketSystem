@@ -111,14 +111,14 @@ public class InventoryClickHandler implements Listener {
         if (status == Status.ERLEDIGT_ABGELEHNT) {
             if (p.isOnline()) {
                 String msg = Config.getCfg().getString("Messages.NotifyPlayer").replace("{ticket_status}", "§cabgelehnt");
-                p.sendMessage(Config.getCfg().getString("Settings.Prefix.Prefix") + msg);
+                p.sendMessage(Config.getCfg().getString("Settings.Prefix") + msg);
             } else {
                 offlineAbgelehnt.add(p);
             }
         } else if (status == Status.ERLEDIGT_ANGENOMMEN) {
             if (p.isOnline()) {
                 String msg = Config.getCfg().getString("Messages.NotifyPlayer").replace("{ticket_status}", "§aangenommen");
-                p.sendMessage(Config.getCfg().getString("Settings.Prefix.Prefix") + msg);
+                p.sendMessage(Config.getCfg().getString("Settings.Prefix") + msg);
             } else {
                 offlineAngenommen.add(p);
             }
