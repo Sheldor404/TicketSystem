@@ -12,10 +12,10 @@ import java.util.HashMap;
 public class InventoryClickHandler implements Listener {
 
 
-    public static HashMap<Player, Integer> plotVerschiebenHashMap = new HashMap<>();
-    public static HashMap<Player, Integer> plotMeldenHashMap = new HashMap<>();
-    public static HashMap<Player, Integer> plotMergenHashMap = new HashMap<>();
-    public static HashMap<Player, Integer> plotBeantragenHashMap = new HashMap<>();
+    public static ArrayList<Player> plotVerschiebenArrayList = new ArrayList<>();
+    public static ArrayList<Player> plotMeldenArrayList = new ArrayList<>();
+    public static ArrayList<Player> plotMergenArrayList = new ArrayList<>();
+    public static ArrayList<Player> plotBeantragenArrayList = new ArrayList<>();
     public static ArrayList<Player> eigenesTicketArrayList = new ArrayList<>();
 
 
@@ -28,37 +28,31 @@ public class InventoryClickHandler implements Listener {
             switch (slot) {
                 //Plot verschieben
                 case 0:
-                    switchManager(player, plotVerschiebenHashMap, "Messages.PlotVerschieben");
+                    switchManager(player, plotVerschiebenArrayList, "Messages.PlotVerschieben");
                     break;
                 //Plot melden
                 case 1:
-                    switchManager(player, plotMeldenHashMap, "Messages.PlotMelden");
+                    switchManager(player, plotMeldenArrayList, "Messages.PlotMelden");
                     break;
                 //Plot mergen
                 case 2:
-                    switchManager(player, plotMergenHashMap, "Messages.PlotMergen");
+                    switchManager(player, plotMergenArrayList, "Messages.PlotMergen");
                     break;
                 //Plot beantragen
                 case 3:
-                    switchManager(player, plotBeantragenHashMap, "Messages.PlotBeantragen");
+                    switchManager(player, plotBeantragenArrayList, "Messages.PlotBeantragen");
                     break;
                 //Eigenes Ticket
                 case 4:
-                    if (!eigenesTicketArrayList.contains(player)) {
-                        eigenesTicketArrayList.add(player);
-                        Config.sendMessage(player, "Messages.EigenesTicket");
-                    } else {
-                        Config.sendMessage(player, "Messages.PlayerHasOpenTicket");
-                    }
-                    player.closeInventory();
+                    switchManager(player, eigenesTicketArrayList, "Messages.EigenesTicket");
                     break;
             }
         }
     }
 
-    private void switchManager(Player player, HashMap hashMap, String messageKey) {
-        if (!hashMap.containsKey(player)) {
-            hashMap.put(player, 0);
+    private void switchManager(Player player, ArrayList arrayList, String messageKey) {
+        if (!arrayList.contains(player)) {
+            arrayList.add(player);
             Config.sendMessage(player, messageKey);
         } else {
             Config.sendMessage(player, "Messages.PlayerHasOpenTicket");

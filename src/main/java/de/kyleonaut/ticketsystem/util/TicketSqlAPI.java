@@ -11,41 +11,41 @@ import java.util.UUID;
 public class TicketSqlAPI {
 
     public static void createTicket(Player player, TicketTypes ticketType, String args, Date eingangsDatum) throws SQLException {
-        TicketSystem.getCon().execute("INSERT INTO ticketsystem_tickets VALUES('" + player.getUniqueId() + "','" + ticketType + "','" + args + "','" + eingangsDatum + "','" + Status.OFFEN + "','','')");
+        TicketSystem.getCon().execute("INSERT INTO ticketsystem_tickets VALUES(" + 0 + ",'" + player.getUniqueId() + "','" + ticketType + "','" + args + "','" + eingangsDatum + "','" + Status.OFFEN + "','NULL','NULL')");
     }
 
-    public static void changeStatus(Status status, int index, Player player) throws SQLException {
-        TicketSystem.getCon().execute("UPDATE ticketsystem_tickets SET ticket_status = '" + status + "', moderator_uuid = '" + player.getUniqueId() + "' WHERE index = " + index + "");
+    public static void changeStatus(Status status, int Id, Player player) throws SQLException {
+        TicketSystem.getCon().execute("UPDATE ticketsystem_tickets SET ticket_status = '" + status + "', moderator_uuid = '" + player.getUniqueId() + "' WHERE id = " + Id + "");
     }
 
-    public static Player getPlayerByIndex(int index) throws SQLException {
-        UUID player_uuid = UUID.fromString((String) TicketSystem.getCon().get("SELECT uuid_player FROM ticketsystem_tickets WHERE index = " + index + "", "uuid_player").get(0));
+    public static Player getPlayerById(int Id) throws SQLException {
+        UUID player_uuid = UUID.fromString((String) TicketSystem.getCon().get("SELECT uuid_player FROM ticketsystem_tickets WHERE id = " + Id + "", "uuid_player").get(0));
         return Bukkit.getPlayer(player_uuid);
     }
 
-    public static TicketTypes getTicketTypeByIndex(int index) throws SQLException {
-        return (TicketTypes) TicketSystem.getCon().get("SELECT ticket_type FROM ticketsystem_ticktes WHERE index = " + index + "", "ticket_type").get(0);
+    public static TicketTypes getTicketTypeById(int Id) throws SQLException {
+        return (TicketTypes) TicketSystem.getCon().get("SELECT ticket_type FROM ticketsystem_ticktes WHERE id = " + Id + "", "ticket_type").get(0);
     }
 
-    public static String getArgsByIndex(int index) throws SQLException {
-        return (String) TicketSystem.getCon().get("SELECT ticket_args FROM ticketsystem_tickets WHERE index = " + index + "", "ticket_args").get(0);
+    public static String getArgsById(int Id) throws SQLException {
+        return (String) TicketSystem.getCon().get("SELECT ticket_args FROM ticketsystem_tickets WHERE id = " + Id + "", "ticket_args").get(0);
     }
 
-    public static Date getEingangDatumByIndex(int index) throws SQLException {
-        return (Date) TicketSystem.getCon().get("SElECT eingangs_datum FROM ticketsytem_tickets WHERE index = " + index, "eingangs_datum").get(0);
+    public static Date getEingangDatumById(int Id) throws SQLException {
+        return (Date) TicketSystem.getCon().get("SElECT eingangs_datum FROM ticketsytem_tickets WHERE id = " + Id, "eingangs_datum").get(0);
     }
 
-    public static Status getTicketStatusByIndex(int index) throws SQLException {
-        return (Status) TicketSystem.getCon().get("SELECT ticket_status FROM ticketsystem_tickets WHERE index = " + index + "", "ticket_status").get(0);
+    public static Status getTicketStatusById(int Id) throws SQLException {
+        return (Status) TicketSystem.getCon().get("SELECT ticket_status FROM ticketsystem_tickets WHERE id = " + Id + "", "ticket_status").get(0);
     }
 
-    public static Player getModeratorByIndex(int index) throws SQLException {
-        UUID player_uuid = UUID.fromString((String) TicketSystem.getCon().get("SELECT moderator_uuid FROM ticketsystem_tickets WHERE index = " + index + "", "moderator_uuid").get(0));
+    public static Player getModeratorById(int Id) throws SQLException {
+        UUID player_uuid = UUID.fromString((String) TicketSystem.getCon().get("SELECT moderator_uuid FROM ticketsystem_tickets WHERE id = " + Id + "", "moderator_uuid").get(0));
         return Bukkit.getPlayer(player_uuid);
     }
 
-    public static Date getDatumAbgabeByIndex(int index) throws SQLException {
-        return (Date) TicketSystem.getCon().get("SElECT datum_abgabe FROM ticketsytem_tickets WHERE index = " + index, "datum_abgabe").get(0);
+    public static Date getDatumAbgabeById(int Id) throws SQLException {
+        return (Date) TicketSystem.getCon().get("SElECT datum_abgabe FROM ticketsytem_tickets WHERE id = " + Id, "datum_abgabe").get(0);
     }
 
     public static Player getScoreByModerator(Player moderator) throws SQLException {

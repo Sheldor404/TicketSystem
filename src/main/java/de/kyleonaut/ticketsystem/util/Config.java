@@ -34,11 +34,14 @@ public class Config {
         cfg.addDefault("Messages.PlayerOutOfTicketCooldown", " §7Du kannst jetzt dein nächstes Ticket stellen.");
         cfg.addDefault("Messages.PlayerHasOpenTicket", " §7Du musst das Ticket ausfüllen, bevor du ein neues erstellst.");
 
-        cfg.addDefault("Messages.PlotVerschieben", " §7Schreibe die §eaktuelle §7Plot-Id in den Chat. Schreibe §edanach §7die neue Plot-Id in den Chat.");
-        cfg.addDefault("Messages.PlotMelden", " §7Schreibe §eals erstes die Plot-Id §7in den Chat. Schreibe §edanach §7kurz was du melden willst. ");
+        cfg.addDefault("Messages.PlotVerschieben", " §7Schreibe die §eaktuelle §7Plot-Id und die §eneue Plot-Id in den Chat.");
+        cfg.addDefault("Messages.PlotMelden", " §7Schreibe die Plot-Id und was du melden willst in den Chat. ");
         cfg.addDefault("Messages.PlotMergen", " §7Schreibe die §ePlot-Ids §7in den Chat.");
-        cfg.addDefault("Messages.PlotBeantragen", " §7Schreibe §eals erstes §7die Plot-Id in den Chat. Schreibe §edanach §7einen Grund warum du das Plot haben willst.");
-        cfg.addDefault("Messages.EigenesTicket", " §7Schreibe dein Ticket in den Chat.");
+        cfg.addDefault("Messages.PlotBeantragen", " §7Schreibe §7die Plot-Id und einen Grund warum du das Plot haben willst in den Chat.");
+        cfg.addDefault("Messages.EigenesTicket", " §7Schreibe dein Ticket-Grund in den Chat.");
+
+        cfg.addDefault("Messages.TicketEingegangen", " §7Dein Ticket wurde uns zugestellt. Du wirst benachrichtigt, sobald das Ticket bearbeitet wurde");
+
         /*
          * Settings
          * */

@@ -5,6 +5,7 @@ import de.kyleonaut.ticketsystem.commands.TicketHistoryCommand;
 import de.kyleonaut.ticketsystem.commands.TicketModerationCommand;
 import de.kyleonaut.ticketsystem.commands.TicketStatsCommand;
 import de.kyleonaut.ticketsystem.events.ChatHandler;
+import de.kyleonaut.ticketsystem.events.HandlePlayerJoin;
 import de.kyleonaut.ticketsystem.events.InventoryClickHandler;
 import de.kyleonaut.ticketsystem.util.Config;
 import de.kyleonaut.ticketsystem.util.MySqlClass;
@@ -32,13 +33,13 @@ public class TicketSystem extends JavaPlugin {
 
         //Events
         Bukkit.getPluginManager().registerEvents(new ChatHandler(),this);
-        Bukkit.getPluginManager().registerEvents(new InventoryClickHandler(),this);
-
+        Bukkit.getPluginManager().registerEvents(new InventoryClickHandler(), this);
+        Bukkit.getPluginManager().registerEvents(new HandlePlayerJoin(), this);
         //MySQL
         con = new MySqlClass();
         try {
 
-            con.execute("CREATE TABLE IF NOT EXISTS ticketsystem_tickets(index INT(10) AUTO_INCREMENT,uuid_player VARCHAR(60), ticket_type VARCHAR(25), ticket_args VARCHAR(255),eingangs_datum VARCHAR(70),ticket_status VARCHAR(15),moderator_uuid VARCHAR(60), datum_abgabe VARCHAR(70), PRIMARY KEY(index))");
+            con.execute("CREATE TABLE IF NOT EXISTS ticketsystem_tickets(id INT NOT NULL AUTO_INCREMENT, uuid_player VARCHAR(60), ticket_type VARCHAR(25), ticket_args VARCHAR(200),eingangs_datum VARCHAR(70),ticket_status VARCHAR(15),moderator_uuid VARCHAR(60), datum_abgabe VARCHAR(70), PRIMARY KEY(id))");
             con.execute("CREATE TABLE IF NOT EXISTS ticketsystem_stats(moderator_uuid VARCHAR(60) PRIMARY KEY, score INT(10))");
 
         } catch (SQLException e) {
@@ -47,11 +48,11 @@ public class TicketSystem extends JavaPlugin {
 
     }
 
-    /*
+
     @Override
     public void onDisable() {
         con.disconnect();
-    }*/
+    }
     public static MySqlClass getCon() {
         return con;
     }
