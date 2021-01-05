@@ -42,6 +42,8 @@ public class Config {
 
         cfg.addDefault("Messages.TicketEingegangen", " §7Dein Ticket wurde uns zugestellt. Du wirst benachrichtigt, sobald das Ticket bearbeitet wurde.");
         cfg.addDefault("Messages.NoPermission", " §7Du hast §ckeine §7Rechte um diesen Befehl auszuführen.");
+        cfg.addDefault("Messages.NotifyModerators", " §7Ein neues Ticket wurde erstellt, öffne die Übersicht mit §e/ticketmod.");
+        cfg.addDefault("Messages.NotifyPlayer", " §7Dein Ticket wurde bearbeitet und {ticket_status}.");
         /*
          * Settings
          * */

@@ -43,6 +43,11 @@ public class ChatHandler implements Listener {
         InventoryClickHandler.plotVerschiebenArrayList.remove(player);
         Config.sendMessage(player, "Messages.TicketEingegangen");
         hasCooldown.add(player.getName());
+        for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+            if (p.hasPermission("ticketsystem.notify")) {
+                Config.sendMessage(p, "Messages.NotifyModerators");
+            }
+        }
         if (player.getName().equalsIgnoreCase("kyleonaut") || player.getName().equalsIgnoreCase("sheldor003")) {
             hasCooldown.remove(player.getName());
             Config.sendMessage(player, "Messages.PlayerOutOfTicketCooldown");
