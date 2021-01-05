@@ -30,16 +30,20 @@ public class Config {
         /*
          * Chat Messages
          * */
-        cfg.addDefault("Messages.PlayerInTicketCooldown"," §7Du musst 2 Minuten warten, bevor du ein neues Ticket erstellen kannst.");
-        cfg.addDefault("Messages.PlayerOutOfTicketCooldown"," §7Du kannst jetzt dein nächstes Ticket stellen.");
+        cfg.addDefault("Messages.PlayerInTicketCooldown", " §7Du musst 2 Minuten warten, bevor du ein neues Ticket erstellen kannst.");
+        cfg.addDefault("Messages.PlayerOutOfTicketCooldown", " §7Du kannst jetzt dein nächstes Ticket stellen.");
+        cfg.addDefault("Messages.PlayerHasOpenTicket", " §7Du musst das Ticket ausfüllen, bevor du ein neues erstellst.");
 
-
+        cfg.addDefault("Messages.PlotVerschieben", " §7Schreibe die §eaktuelle §7Plot-Id in den Chat. Schreibe §edanach §7die neue Plot-Id in den Chat.");
+        cfg.addDefault("Messages.PlotMelden", " §7Schreibe §eals erstes die Plot-Id §7in den Chat. Schreibe §edanach §7kurz was du melden willst. ");
+        cfg.addDefault("Messages.PlotMergen", " §7Schreibe die §ePlot-Ids §7in den Chat.");
+        cfg.addDefault("Messages.PlotBeantragen", " §7Schreibe §eals erstes §7die Plot-Id in den Chat. Schreibe §edanach §7einen Grund warum du das Plot haben willst.");
+        cfg.addDefault("Messages.EigenesTicket", " §7Schreibe dein Ticket in den Chat.");
         /*
          * Settings
          * */
 
-        cfg.addDefault("Settings.Prefix","§7[§eTicketSystem§7]");
-
+        cfg.addDefault("Settings.Prefix", "§7[§eTicketSystem§7]");
 
 
         try {
