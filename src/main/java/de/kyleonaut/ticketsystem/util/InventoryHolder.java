@@ -34,7 +34,11 @@ public class InventoryHolder {
                 String eingangs_Datum = TicketSqlAPI.getEingangDatumById((Integer) id);
                 String ticket_status = TicketSqlAPI.getTicketStatusById((Integer) id);
                 ticket_type = ticketConverter(ticket_type);
-                ticket_status = "§eOffen";
+                if (ticket_status.equalsIgnoreCase("OFFEN")) {
+                    ticket_status = "§aOffen";
+                } else if (ticket_status.equalsIgnoreCase("IN_BEARBEITUNG")) {
+                    ticket_status = "§6in Bearbeitung";
+                }
                 ArrayList<String> lore = new ArrayList<>();
                 lore.add("§7➥§e Ticket Type: §7" + ticket_type);
                 lore.add("§7➥§e Ticket Message: §7" + ticket_args);
@@ -52,15 +56,17 @@ public class InventoryHolder {
 
     public static void openSecondModerationGui(Player p, String targetPlayerName, InventoryClickEvent event) throws SQLException {
         Builder builder = new Builder();
-        Inventory inventory = Bukkit.createInventory(null, InventoryType.HOPPER, "Ticket Verwaltung");
+        Inventory inventory = Bukkit.createInventory(null, 9, "Ticket Verwaltung");
         ArrayList<String> lore = new ArrayList<>();
         int id = Integer.parseInt(event.getCurrentItem().getItemMeta().getLore().get(4).replace("§7➥§e Ticket Nummer: §7", ""));
         lore.add("§7➥ §eTicket Nummer: " + event.getCurrentItem().getItemMeta().getLore().get(4).replace("§7➥§e Ticket Nummer: §7", ""));
-        inventory.addItem(builder.createHead(targetPlayerName, "§e" + TicketSqlAPI.getPlayerNameById(id), lore));
-        inventory.addItem(builder.createGlassPane(Builder.Color.RED, "§aErledigt & §cAbgelehnt", 1, "§7➥ Klicke um das Ticket zu schließen"));
-        inventory.addItem(builder.createGlassPane(Builder.Color.LIME_GREEN, "§aErledigt & Angenommen", 1, "§7➥ Klicke um das Ticket zu schließen"));
-        inventory.addItem(builder.createGlassPane(Builder.Color.YELLOW, "§eAlle Tickets", 1, "§7➥§e Zeige alle offnen Tickets von: " + TicketSqlAPI.getPlayerNameById(id)));
-        inventory.addItem(builder.createItem(Material.BARRIER, "§eZurück zum Hauptmenu"));
+        inventory.setItem(0, builder.createHead(targetPlayerName, "§e" + TicketSqlAPI.getPlayerNameById(id), lore));
+        inventory.setItem(1, builder.createGlassPane(Builder.Color.RED, "§aErledigt & §cAbgelehnt", 1, "§7➥ Klicke um das Ticket zu schließen"));
+        inventory.setItem(2, builder.createGlassPane(Builder.Color.LIME_GREEN, "§aErledigt & Angenommen", 1, "§7➥ Klicke um das Ticket zu schließen"));
+        inventory.setItem(3, builder.createGlassPane(Builder.Color.YELLOW, "§eAlle Tickets", 1, "§7➥§e Zeige alle offnen Tickets von: " + TicketSqlAPI.getPlayerNameById(id)));
+        inventory.setItem(4, builder.createGlassPane(Builder.Color.BLACK, "§eNotizen", 1, "§7➥§e Öffne die Notizen Gui"));
+
+        inventory.setItem(8, builder.createItem(Material.BARRIER, "§eZurück zum Hauptmenu"));
         p.openInventory(inventory);
     }
 
@@ -100,13 +106,17 @@ public class InventoryHolder {
                     String ticket_args = TicketSqlAPI.getArgsById((Integer) id);
                     String eingangs_Datum = TicketSqlAPI.getEingangDatumById((Integer) id);
                     String ticket_status = TicketSqlAPI.getTicketStatusById((Integer) id);
-                    String zuständiger_Mod = TicketSqlAPI.getModeratorById((Integer) id).getDisplayName();
+                    String zuständiger_Mod = TicketSqlAPI.getModeratorNameById((Integer) id);
                     String abgabe_Datum = TicketSqlAPI.getDatumAbgabeById((Integer) id);
+                    int changed = 0;
                     if (ticket_status.equalsIgnoreCase("ERLEDIGT_ANGENOMMEN")) {
                         ticket_status = "§aangenommen";
+                        changed = 1;
                     } else if (ticket_status.equalsIgnoreCase("ERLEDIGT_ABGELEHNT")) {
                         ticket_status = "§cabgelehnt";
+                        changed = 1;
                     }
+
                     ticket_type = ticketConverter(ticket_type);
                     ArrayList<String> lore = new ArrayList<>();
                     lore.add("§7➥§e Ticket Type: §7" + ticket_type);
@@ -116,7 +126,10 @@ public class InventoryHolder {
                     lore.add("§7➥§e Ticket Nummer: §7" + id);
                     lore.add("§7➥§e Abgabedatum: §7" + abgabe_Datum);
                     lore.add("§7➥§a Zuständiger Moderator: §7" + zuständiger_Mod);
-                    inventory.addItem(builder.createHead(TicketSqlAPI.getPlayerNameById((Integer) id), "§e" + TicketSqlAPI.getPlayerNameById((Integer) id), lore));
+                    if (changed == 1) {
+                        inventory.addItem(builder.createHead(TicketSqlAPI.getPlayerNameById((Integer) id), "§e" + TicketSqlAPI.getPlayerNameById((Integer) id), lore));
+                    }
+
                 } catch (Exception e) {
 
                 }
@@ -168,5 +181,38 @@ public class InventoryHolder {
         p.openInventory(inventory);
     }
 
+    public static void openAllNotesByTicketId(int ticket_id, Player player) throws SQLException {
+        Builder builder = new Builder();
+        Inventory inventory = Bukkit.createInventory(null, 9 * 6, "Notizen");
+        inventory.setItem(0, builder.createHead(TicketSqlAPI.getPlayerNameById(ticket_id), "§e" + TicketSqlAPI.getPlayerNameById(ticket_id), "§7➥ Ticket Nummer: " + ticket_id));
+        inventory.setItem(8, builder.createItem(Material.BOOK, "§eNotiz hinzufügen"));
+        inventory.setItem(53, builder.createItem(Material.BARRIER, "§eZurück zum Hauptmenu"));
+        for (int i = 1; i < 8; i++) {
+            inventory.setItem(i, builder.createGlassPane(Builder.Color.WHITE, "", 1, ""));
+        }
+        for (Object j : NotizAPI.getAllNotizIdsByTicketId(ticket_id)) {
+            try {
+                inventory.addItem(builder.createItem(Material.PAPER, "§7Notiz von §e" + NotizAPI.getAuthorByNotizId((Integer) j), 1, "§e" + NotizAPI.getDateByNotizId((Integer) j) + "§7 ➥ §e" + NotizAPI.getNotizMessageByNotizId((Integer) j)));
+            } catch (IndexOutOfBoundsException e) {
+            }
+        }
+        player.openInventory(inventory);
+    }
 
+    public static void openAllNotesByTicketIdByHistory(int ticket_id, Player player) throws SQLException {
+        Builder builder = new Builder();
+        Inventory inventory = Bukkit.createInventory(null, 9 * 6, "Notizen [Geschlossen]");
+        inventory.setItem(0, builder.createHead(TicketSqlAPI.getPlayerNameById(ticket_id), "§e" + TicketSqlAPI.getPlayerNameById(ticket_id), "§7➥ Ticket Nummer: " + ticket_id));
+        inventory.setItem(53, builder.createItem(Material.BOOK, "§eZurück zum Archiv"));
+        for (int i = 1; i < 9; i++) {
+            inventory.setItem(i, builder.createGlassPane(Builder.Color.WHITE, "", 1, ""));
+        }
+        for (Object j : NotizAPI.getAllNotizIdsByTicketId(ticket_id)) {
+            try {
+                inventory.addItem(builder.createItem(Material.PAPER, "§7Notiz von " + NotizAPI.getAuthorByNotizId((Integer) j), 1, "§e" + NotizAPI.getDateByNotizId((Integer) j) + "§7 ➥ §e" + NotizAPI.getNotizMessageByNotizId((Integer) j)));
+            } catch (IndexOutOfBoundsException e) {
+            }
+        }
+        player.openInventory(inventory);
+    }
 }

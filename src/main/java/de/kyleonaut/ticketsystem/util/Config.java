@@ -45,6 +45,8 @@ public class Config {
         cfg.addDefault("Messages.NotifyModerators", " §7Ein neues Ticket wurde erstellt, öffne die Übersicht mit §e/ticketmod.");
         cfg.addDefault("Messages.NotifyPlayer", " §7Dein Ticket wurde bearbeitet und {ticket_status}.");
         cfg.addDefault("Messages.MessageToLong", " §7Deine Nachricht ist zu lang!");
+        cfg.addDefault("Messages.Notiz", " §7Schreibe deine Notiz in den Chat.");
+        cfg.addDefault("Messages.NotizAdded", " §7Deine Notiz wurde erfolgreich hinzugefügt.");
 
         /*
          * Settings

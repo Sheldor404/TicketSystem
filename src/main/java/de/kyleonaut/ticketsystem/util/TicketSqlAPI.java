@@ -12,6 +12,7 @@ import org.apache.commons.io.IOUtils;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -23,13 +24,13 @@ import java.util.UUID;
 public class TicketSqlAPI {
 
     public static void createTicket(Player player, TicketTypes ticketType, String args, String eingangsDatum) throws SQLException {
-        TicketSystem.getCon().execute("INSERT INTO ticketsystem_tickets VALUES(" + 0 + ",'" + player.getUniqueId() + "','" + player.getName() + "','" + ticketType + "','" + args + "','" + eingangsDatum + "','" + Status.OFFEN + "','NULL','NULL')");
+        TicketSystem.getCon().execute("INSERT INTO ticketsystem_tickets VALUES(" + 0 + ",'" + player.getUniqueId() + "','" + player.getName() + "','" + ticketType + "','" + args + "','" + eingangsDatum + "','" + Status.OFFEN + "','NULL','NULL','NULL')");
     }
 
     public static void changeStatus(Status status, int Id, Player player) throws SQLException {
         LocalDateTime ldt = LocalDateTime.now();
         String date = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.GERMANY).format(ldt);
-        TicketSystem.getCon().execute("UPDATE ticketsystem_tickets SET ticket_status = '" + status + "', moderator_uuid = '" + player.getUniqueId() + "',datum_abgabe = '" + date + "' WHERE id = " + Id + "");
+        TicketSystem.getCon().execute("UPDATE ticketsystem_tickets SET ticket_status = '" + status + "', moderator_uuid = '" + player.getUniqueId() + "',datum_abgabe = '" + date + "',moderator_name = '" + player.getName() + "' WHERE id = " + Id + "");
     }
 
     public static Player getPlayerById(int Id) throws SQLException {
@@ -53,26 +54,31 @@ public class TicketSqlAPI {
         return (String) TicketSystem.getCon().get("SELECT ticket_status FROM ticketsystem_tickets WHERE id = " + Id + "", "ticket_status").get(0);
     }
 
+
     public static Player getModeratorById(int Id) throws SQLException {
         UUID player_uuid = UUID.fromString((String) TicketSystem.getCon().get("SELECT moderator_uuid FROM ticketsystem_tickets WHERE id = " + Id + "", "moderator_uuid").get(0));
         return Bukkit.getServer().getOfflinePlayer(player_uuid).getPlayer();
+    }
 
+    public static String getModeratorNameById(int Id) throws SQLException {
+        return (String) TicketSystem.getCon().get("SELECT moderator_name FROM ticketsystem_tickets WHERE id = " + Id + "", "moderator_name").get(0);
     }
 
     public static String getDatumAbgabeById(int Id) throws SQLException {
         return (String) TicketSystem.getCon().get("SElECT datum_abgabe FROM ticketsystem_tickets WHERE id = " + Id, "datum_abgabe").get(0);
     }
 
+    @Deprecated
     public static Player getScoreByModerator(Player moderator) throws SQLException {
         return Bukkit.getPlayer(UUID.fromString((String) TicketSystem.getCon().get("SELECT score FROM ticketsystem_stats WHERE moderator_uuid = " + moderator.getUniqueId() + "", "score").get(0)));
     }
 
     public static ArrayList<Object> getAllOpenTicketIds() throws SQLException {
-        return TicketSystem.getCon().get("SELECT id FROM ticketsystem_tickets WHERE ticket_status = 'OFFEN'", "id");
+        return TicketSystem.getCon().get("SELECT id FROM ticketsystem_tickets WHERE ticket_status = 'OFFEN' OR ticket_status = 'IN_BEARBEITUNG'", "id");
     }
 
     public static ArrayList<Object> getAllOpenTicketIdsByPlayerName(String playerName) throws SQLException {
-        return TicketSystem.getCon().get("SELECT id FROM ticketsystem_tickets WHERE player_name = '" + playerName + "' AND ticket_status = 'OFFEN' ", "id");
+        return TicketSystem.getCon().get("SELECT id FROM ticketsystem_tickets WHERE player_name = '" + playerName + "' AND ticket_status = 'OFFEN' OR ticket_status = 'IN_BEARBEITUNG' ", "id");
     }
 
     public static ArrayList<Object> getAllTicketIds() throws SQLException {
@@ -82,5 +88,6 @@ public class TicketSqlAPI {
     public static String getPlayerNameById(int Id) throws SQLException {
         return (String) TicketSystem.getCon().get("SELECT player_name FROM ticketsystem_tickets WHERE id = " + Id + "", "player_name").get(0);
     }
+
 
 }

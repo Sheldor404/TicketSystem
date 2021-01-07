@@ -1,9 +1,6 @@
 package de.kyleonaut.ticketsystem.events;
 
-import de.kyleonaut.ticketsystem.util.Config;
-import de.kyleonaut.ticketsystem.util.InventoryHolder;
-import de.kyleonaut.ticketsystem.util.Status;
-import de.kyleonaut.ticketsystem.util.TicketSqlAPI;
+import de.kyleonaut.ticketsystem.util.*;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,6 +11,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.ExecutionException;
 
 public class InventoryClickHandler implements Listener {
 
@@ -26,6 +24,8 @@ public class InventoryClickHandler implements Listener {
 
     public static ArrayList<Player> offlineAbgelehnt = new ArrayList<>();
     public static ArrayList<Player> offlineAngenommen = new ArrayList<>();
+
+    public static HashMap<Player, Integer> waitingForNotiz = new HashMap<>();
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) throws SQLException {
@@ -61,11 +61,8 @@ public class InventoryClickHandler implements Listener {
                 InventoryHolder.openTicketHistory((Player) event.getWhoClicked());
             } else {
                 try {
-                    System.out.println("Ticket Moderation");
                     String target = TicketSqlAPI.getPlayerNameById(Integer.parseInt(event.getCurrentItem().getItemMeta().getLore().get(4).replace("§7➥§e Ticket Nummer: §7", "")));
-                    System.out.println(target);
                     InventoryHolder.openSecondModerationGui((Player) event.getWhoClicked(), target, event);
-                    System.out.println("done");
                 } catch (NullPointerException exception) {
 
                 }
@@ -79,27 +76,58 @@ public class InventoryClickHandler implements Listener {
                 case 1:
                     TicketSqlAPI.changeStatus(Status.ERLEDIGT_ABGELEHNT, Integer.parseInt((event.getInventory().getItem(0).getItemMeta().getLore().get(0).replace("§7➥ §eTicket Nummer: ", ""))), (Player) event.getWhoClicked());
                     InventoryHolder.openMainModerationGui(player);
-                    notifyPlayer(TicketSqlAPI.getPlayerById(Integer.parseInt(event.getInventory().getItem(0).getItemMeta().getLore().get(0).replace("§7➥ §eTicket Nummer: ", ""))), Status.ERLEDIGT_ABGELEHNT);
+                    notifyPlayer(player, TicketSqlAPI.getPlayerNameById(Integer.parseInt(event.getInventory().getItem(0).getItemMeta().getLore().get(0).replace("§7➥ §eTicket Nummer: ", ""))), Status.ERLEDIGT_ABGELEHNT);
                     break;
                 case 2:
                     TicketSqlAPI.changeStatus(Status.ERLEDIGT_ANGENOMMEN, Integer.parseInt((event.getInventory().getItem(0).getItemMeta().getLore().get(0).replace("§7➥ §eTicket Nummer: ", ""))), (Player) event.getWhoClicked());
                     InventoryHolder.openMainModerationGui(player);
-                    notifyPlayer(TicketSqlAPI.getPlayerById(Integer.parseInt(event.getInventory().getItem(0).getItemMeta().getLore().get(0).replace("§7➥ §eTicket Nummer: ", ""))), Status.ERLEDIGT_ANGENOMMEN);
+                    notifyPlayer(player, TicketSqlAPI.getPlayerNameById(Integer.parseInt(event.getInventory().getItem(0).getItemMeta().getLore().get(0).replace("§7➥ §eTicket Nummer: ", ""))), Status.ERLEDIGT_ANGENOMMEN);
                     break;
                 case 3:
                     InventoryHolder.openFilteredModerationGui(player, TicketSqlAPI.getPlayerNameById(Integer.parseInt(event.getInventory().getItem(0).getItemMeta().getLore().get(0).replace("§7➥ §eTicket Nummer: ", ""))));
                     break;
                 case 4:
+                    InventoryHolder.openAllNotesByTicketId(Integer.parseInt(event.getInventory().getItem(0).getItemMeta().getLore().get(0).replace("§7➥ §eTicket Nummer: ", "")), player);
+                    break;
+                case 8:
                     InventoryHolder.openMainModerationGui(player);
                     break;
             }
         } else if (event.getInventory().getTitle().equalsIgnoreCase("Ticket History")) {
             event.setCancelled(true);
+            Player player = (Player) event.getWhoClicked();
             if (event.getSlot() == 53) {
                 InventoryHolder.openMainModerationGui((Player) event.getWhoClicked());
+            } else {
+                try {
+                    InventoryHolder.openAllNotesByTicketIdByHistory(Integer.parseInt(event.getCurrentItem().getItemMeta().getLore().get(4).replace("§7➥§e Ticket Nummer: §7", "")), player);
+                } catch (NullPointerException e) {
+
+                }
             }
+
         } else if (event.getInventory().getTitle().equalsIgnoreCase("Ticket Overview")) {
             event.setCancelled(true);
+        } else if (event.getInventory().getTitle().equalsIgnoreCase("Notizen")) {
+            event.setCancelled(true);
+            Player player = (Player) event.getWhoClicked();
+            if (event.getSlot() == 8) {
+                waitingForNotiz.put(player, Integer.valueOf(event.getInventory().getItem(0).getItemMeta().getLore().get(0).replace("§7➥ Ticket Nummer: ", "")));
+                player.closeInventory();
+                Config.sendMessage(player, "Messages.Notiz");
+            } else if (event.getSlot() == 53) {
+                InventoryHolder.openMainModerationGui(player);
+            } else {
+                return;
+            }
+        } else if (event.getInventory().getTitle().equalsIgnoreCase("Notizen [Geschlossen]")) {
+            event.setCancelled(true);
+            Player player = (Player) event.getWhoClicked();
+            if (event.getSlot() == 53) {
+                InventoryHolder.openTicketHistory(player);
+            } else {
+                return;
+            }
         }
     }
 
@@ -113,30 +141,15 @@ public class InventoryClickHandler implements Listener {
         player.closeInventory();
     }
 
-    private void notifyPlayer(Player p, Status status) {
+    private void notifyPlayer(Player sender, String playerName, Status status) {
         if (status == Status.ERLEDIGT_ABGELEHNT) {
-            try {
-                if (p.isOnline()) {
-                    String msg = Config.getCfg().getString("Messages.NotifyPlayer").replace("{ticket_status}", "§cabgelehnt");
-                    p.sendMessage(Config.getCfg().getString("Settings.Prefix") + msg);
-                } else {
-                    offlineAbgelehnt.add(p);
-                }
-            } catch (NullPointerException e) {
-                offlineAbgelehnt.add(p);
-            }
+            String value = Config.getCfg().getString("Messages.NotifyPlayer").replace("{ticket_status}", "§cabgelehnt");
+            sender.performCommand("mail send " + playerName + " " + value);
 
         } else if (status == Status.ERLEDIGT_ANGENOMMEN) {
-            try {
-                if (p.isOnline()) {
-                    String msg = Config.getCfg().getString("Messages.NotifyPlayer").replace("{ticket_status}", "§aangenommen");
-                    p.sendMessage(Config.getCfg().getString("Settings.Prefix") + msg);
-                } else {
-                    offlineAngenommen.add(p);
-                }
-            } catch (NullPointerException e) {
-                offlineAngenommen.add(p);
-            }
+            String value = Config.getCfg().getString("Messages.NotifyPlayer").replace("{ticket_status}", "§aangenommen");
+            sender.performCommand("mail send " + playerName + " " + value);
+
 
         }
     }

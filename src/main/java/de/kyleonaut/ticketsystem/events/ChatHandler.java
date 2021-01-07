@@ -2,6 +2,7 @@ package de.kyleonaut.ticketsystem.events;
 
 import de.kyleonaut.ticketsystem.TicketSystem;
 import de.kyleonaut.ticketsystem.util.Config;
+import de.kyleonaut.ticketsystem.util.NotizAPI;
 import de.kyleonaut.ticketsystem.util.TicketSqlAPI;
 import de.kyleonaut.ticketsystem.util.TicketTypes;
 import org.bukkit.Bukkit;
@@ -38,10 +39,19 @@ public class ChatHandler implements Listener {
         } else if (InventoryClickHandler.eigenesTicketArrayList.contains(player)) {
             chatManager(player, event, message, TicketTypes.EIGENES_TICKET);
         }
+        if (InventoryClickHandler.waitingForNotiz.containsKey(player)) {
+            event.setCancelled(true);
+            event.setMessage("");
+            NotizAPI.createNewNotiz(player, message, InventoryClickHandler.waitingForNotiz.get(player));
+            InventoryClickHandler.waitingForNotiz.remove(player);
+            Config.sendMessage(player, "Messages.NotizAdded");
+            player.performCommand("ticketmod");
+        }
     }
 
     private void chatManager(Player player, PlayerChatEvent event, String message, TicketTypes type) throws SQLException {
         event.setCancelled(true);
+        event.setMessage("");
         if (message.length() > 200) {
             Config.sendMessage(player, "Messages.MessageToLong");
         } else {

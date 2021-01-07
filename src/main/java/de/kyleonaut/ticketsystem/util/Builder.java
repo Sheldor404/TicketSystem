@@ -234,5 +234,17 @@ public class Builder {
         skull.setItemMeta(meta);
         return skull;
     }
+
+    public ItemStack createHead(String playerName, String displayName, String lore) {
+        ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (short) SkullType.PLAYER.ordinal());
+        SkullMeta meta = (SkullMeta) skull.getItemMeta();
+        meta.setOwner(playerName);
+        meta.setDisplayName(displayName);
+        ArrayList<String> lorE = new ArrayList<>();
+        lorE.add(lore);
+        meta.setLore(lorE);
+        skull.setItemMeta(meta);
+        return skull;
+    }
 }
 

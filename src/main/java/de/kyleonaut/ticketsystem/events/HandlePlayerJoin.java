@@ -12,10 +12,6 @@ public class HandlePlayerJoin implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
         Player player = e.getPlayer();
-        if (ChatHandler.hasCooldown.contains(player.getName())) {
-            ChatHandler.hasCooldown.remove(player.getName());
-            Config.sendMessage(player, "Messages.PlayerOutOfTicketCooldown");
-        }
         if (InventoryClickHandler.offlineAngenommen.contains(player)) {
             InventoryClickHandler.offlineAngenommen.remove(player);
             String msg = Config.getCfg().getString("Messages.NotifyPlayer").replace("{ticket_status}", "§aangenommen");
