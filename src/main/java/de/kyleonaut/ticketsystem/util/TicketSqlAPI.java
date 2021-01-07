@@ -13,18 +13,22 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 import java.util.UUID;
 
 public class TicketSqlAPI {
 
-    public static void createTicket(Player player, TicketTypes ticketType, String args, Date eingangsDatum) throws SQLException {
-        TicketSystem.getCon().execute("INSERT INTO ticketsystem_tickets VALUES(" + 0 + ",'" + player.getUniqueId() + "','" + ticketType + "','" + args + "','" + eingangsDatum + "','" + Status.OFFEN + "','NULL','NULL')");
+    public static void createTicket(Player player, TicketTypes ticketType, String args, String eingangsDatum) throws SQLException {
+        TicketSystem.getCon().execute("INSERT INTO ticketsystem_tickets VALUES(" + 0 + ",'" + player.getUniqueId() + "','" + player.getName() + "','" + ticketType + "','" + args + "','" + eingangsDatum + "','" + Status.OFFEN + "','NULL','NULL')");
     }
 
     public static void changeStatus(Status status, int Id, Player player) throws SQLException {
-        Date date = new Date();
+        LocalDateTime ldt = LocalDateTime.now();
+        String date = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.GERMANY).format(ldt);
         TicketSystem.getCon().execute("UPDATE ticketsystem_tickets SET ticket_status = '" + status + "', moderator_uuid = '" + player.getUniqueId() + "',datum_abgabe = '" + date + "' WHERE id = " + Id + "");
     }
 
@@ -67,11 +71,16 @@ public class TicketSqlAPI {
         return TicketSystem.getCon().get("SELECT id FROM ticketsystem_tickets WHERE ticket_status = 'OFFEN'", "id");
     }
 
-    public static ArrayList<Object> getAllOpenTicketIdsByPlayer(Player player) throws SQLException {
-        return TicketSystem.getCon().get("SELECT id FROM ticketsystem_tickets WHERE uuid_player = '" + player.getUniqueId() + "' AND ticket_status = 'OFFEN' ", "id");
+    public static ArrayList<Object> getAllOpenTicketIdsByPlayerName(String playerName) throws SQLException {
+        return TicketSystem.getCon().get("SELECT id FROM ticketsystem_tickets WHERE player_name = '" + playerName + "' AND ticket_status = 'OFFEN' ", "id");
     }
 
     public static ArrayList<Object> getAllTicketIds() throws SQLException {
         return TicketSystem.getCon().get("SELECT * FROM ticketsystem_tickets ORDER BY id DESC", "id");
     }
+
+    public static String getPlayerNameById(int Id) throws SQLException {
+        return (String) TicketSystem.getCon().get("SELECT player_name FROM ticketsystem_tickets WHERE id = " + Id + "", "player_name").get(0);
+    }
+
 }

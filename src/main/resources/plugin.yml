@@ -1,8 +1,25 @@
 name: Ticketsystem
-version: 1
+version: /final
 main: de.kyleonaut.ticketsystem.TicketSystem
 commands:
   ticket:
-     description: Create a new Ticket
+    description: Create a new Ticket
   ticketmod:
+    description: Moderate tickets
+    aliases:
+      - tm
   tickethistory:
+    description: Open the Ticket History
+    aliases:
+      - th
+  tickets:
+    description: Get a Overview of all your open Tickets
+description: This Plugin is a Easy2Use Ticketsystem coded by kyleonaut and Sheldor003.
+permissions:
+  ticketsystem:
+    moderation:
+    history:
+database: true
+author: kyleonaut
+
+

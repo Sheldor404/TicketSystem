@@ -30,7 +30,7 @@ public class Config {
         /*
          * Chat Messages
          * */
-        cfg.addDefault("Messages.PlayerInTicketCooldown", " §7Du musst 2 Minuten warten, bevor du ein neues Ticket erstellen kannst.");
+        cfg.addDefault("Messages.PlayerInTicketCooldown", " §7Du musst %TicketCooldownInMinutes% Minuten §7warten, bevor du ein neues Ticket erstellen kannst.");
         cfg.addDefault("Messages.PlayerOutOfTicketCooldown", " §7Du kannst jetzt dein nächstes Ticket stellen.");
         cfg.addDefault("Messages.PlayerHasOpenTicket", " §7Du musst das Ticket ausfüllen, bevor du ein neues erstellst.");
 
@@ -45,11 +45,14 @@ public class Config {
         cfg.addDefault("Messages.NotifyModerators", " §7Ein neues Ticket wurde erstellt, öffne die Übersicht mit §e/ticketmod.");
         cfg.addDefault("Messages.NotifyPlayer", " §7Dein Ticket wurde bearbeitet und {ticket_status}.");
         cfg.addDefault("Messages.MessageToLong", " §7Deine Nachricht ist zu lang!");
+
         /*
          * Settings
          * */
 
         cfg.addDefault("Settings.Prefix", "§7[§eTicketSystem§7]");
+        cfg.addDefault("Settings.TicketCooldownInMinutes", 2);
+        cfg.addDefault("Settings.DebugMode", true);
 
 
         try {

@@ -225,10 +225,10 @@ public class Builder {
         return skull;
     }
 
-    public ItemStack createHead(Player player, String displayName, ArrayList<String> lore) {
+    public ItemStack createHead(String playerName, String displayName, ArrayList<String> lore) {
         ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (short) SkullType.PLAYER.ordinal());
         SkullMeta meta = (SkullMeta) skull.getItemMeta();
-        meta.setOwner(player.getName());
+        meta.setOwner(playerName);
         meta.setDisplayName(displayName);
         meta.setLore(lore);
         skull.setItemMeta(meta);

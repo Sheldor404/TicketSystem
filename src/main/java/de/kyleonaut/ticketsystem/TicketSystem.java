@@ -3,6 +3,7 @@ package de.kyleonaut.ticketsystem;
 import de.kyleonaut.ticketsystem.commands.TicketCommand;
 import de.kyleonaut.ticketsystem.commands.TicketHistoryCommand;
 import de.kyleonaut.ticketsystem.commands.TicketModerationCommand;
+import de.kyleonaut.ticketsystem.commands.TicketsCommand;
 import de.kyleonaut.ticketsystem.events.ChatHandler;
 import de.kyleonaut.ticketsystem.events.HandlePlayerJoin;
 import de.kyleonaut.ticketsystem.events.InventoryClickHandler;
@@ -28,6 +29,7 @@ public class TicketSystem extends JavaPlugin {
         this.getCommand("ticket").setExecutor(new TicketCommand());
         this.getCommand("ticketmod").setExecutor(new TicketModerationCommand());
         this.getCommand("tickethistory").setExecutor(new TicketHistoryCommand());
+        this.getCommand("tickets").setExecutor(new TicketsCommand());
 
 
         //Events
@@ -38,8 +40,8 @@ public class TicketSystem extends JavaPlugin {
         con = new MySqlClass();
         try {
 
-            con.execute("CREATE TABLE IF NOT EXISTS ticketsystem_tickets(id INT NOT NULL AUTO_INCREMENT, uuid_player VARCHAR(60), ticket_type VARCHAR(25), ticket_args VARCHAR(200),eingangs_datum VARCHAR(70),ticket_status VARCHAR(30),moderator_uuid VARCHAR(60), datum_abgabe VARCHAR(70), PRIMARY KEY(id))");
-
+            con.execute("CREATE TABLE IF NOT EXISTS ticketsystem_tickets(id INT NOT NULL AUTO_INCREMENT, uuid_player VARCHAR(60),player_name VARCHAR(50), ticket_type VARCHAR(25), ticket_args VARCHAR(200),eingangs_datum VARCHAR(70),ticket_status VARCHAR(30),moderator_uuid VARCHAR(60), datum_abgabe VARCHAR(70), PRIMARY KEY(id))");
+            System.out.println("[TicketSystem] MySQL Setup complete");
         } catch (SQLException e) {
             e.printStackTrace();
         }

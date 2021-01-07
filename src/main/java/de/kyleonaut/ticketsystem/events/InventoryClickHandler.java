@@ -10,6 +10,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -60,8 +61,11 @@ public class InventoryClickHandler implements Listener {
                 InventoryHolder.openTicketHistory((Player) event.getWhoClicked());
             } else {
                 try {
-                    Player target = Bukkit.getPlayer((event.getCurrentItem().getItemMeta().getDisplayName().replace("§eTicket von: ", "")));
+                    System.out.println("Ticket Moderation");
+                    String target = TicketSqlAPI.getPlayerNameById(Integer.parseInt(event.getCurrentItem().getItemMeta().getLore().get(4).replace("§7➥§e Ticket Nummer: §7", "")));
+                    System.out.println(target);
                     InventoryHolder.openSecondModerationGui((Player) event.getWhoClicked(), target, event);
+                    System.out.println("done");
                 } catch (NullPointerException exception) {
 
                 }
@@ -83,7 +87,7 @@ public class InventoryClickHandler implements Listener {
                     notifyPlayer(TicketSqlAPI.getPlayerById(Integer.parseInt(event.getInventory().getItem(0).getItemMeta().getLore().get(0).replace("§7➥ §eTicket Nummer: ", ""))), Status.ERLEDIGT_ANGENOMMEN);
                     break;
                 case 3:
-                    InventoryHolder.openFilteredModerationGui(player);
+                    InventoryHolder.openFilteredModerationGui(player, TicketSqlAPI.getPlayerNameById(Integer.parseInt(event.getInventory().getItem(0).getItemMeta().getLore().get(0).replace("§7➥ §eTicket Nummer: ", ""))));
                     break;
                 case 4:
                     InventoryHolder.openMainModerationGui(player);
@@ -94,6 +98,8 @@ public class InventoryClickHandler implements Listener {
             if (event.getSlot() == 53) {
                 InventoryHolder.openMainModerationGui((Player) event.getWhoClicked());
             }
+        } else if (event.getInventory().getTitle().equalsIgnoreCase("Ticket Overview")) {
+            event.setCancelled(true);
         }
     }
 
@@ -109,19 +115,29 @@ public class InventoryClickHandler implements Listener {
 
     private void notifyPlayer(Player p, Status status) {
         if (status == Status.ERLEDIGT_ABGELEHNT) {
-            if (p.isOnline()) {
-                String msg = Config.getCfg().getString("Messages.NotifyPlayer").replace("{ticket_status}", "§cabgelehnt");
-                p.sendMessage(Config.getCfg().getString("Settings.Prefix") + msg);
-            } else {
+            try {
+                if (p.isOnline()) {
+                    String msg = Config.getCfg().getString("Messages.NotifyPlayer").replace("{ticket_status}", "§cabgelehnt");
+                    p.sendMessage(Config.getCfg().getString("Settings.Prefix") + msg);
+                } else {
+                    offlineAbgelehnt.add(p);
+                }
+            } catch (NullPointerException e) {
                 offlineAbgelehnt.add(p);
             }
+
         } else if (status == Status.ERLEDIGT_ANGENOMMEN) {
-            if (p.isOnline()) {
-                String msg = Config.getCfg().getString("Messages.NotifyPlayer").replace("{ticket_status}", "§aangenommen");
-                p.sendMessage(Config.getCfg().getString("Settings.Prefix") + msg);
-            } else {
+            try {
+                if (p.isOnline()) {
+                    String msg = Config.getCfg().getString("Messages.NotifyPlayer").replace("{ticket_status}", "§aangenommen");
+                    p.sendMessage(Config.getCfg().getString("Settings.Prefix") + msg);
+                } else {
+                    offlineAngenommen.add(p);
+                }
+            } catch (NullPointerException e) {
                 offlineAngenommen.add(p);
             }
+
         }
     }
 }
