@@ -71,7 +71,7 @@ public class InventoryHolder {
     }
 
     public static void openFilteredModerationGui(Player player, String filterPlayerName) throws SQLException {
-        Inventory inventory = Bukkit.createInventory(null, 9 * 6, "Ticket Moderation");
+        Inventory inventory = Bukkit.createInventory(null, 9 * 6, "Ticket Moderation [Gefiltert]");
         Builder builder = new Builder();
         for (Object id : TicketSqlAPI.getAllOpenTicketIdsByPlayerName(filterPlayerName)) {
             try {
@@ -92,7 +92,7 @@ public class InventoryHolder {
             }
 
         }
-        inventory.setItem(53, builder.createItem(Material.BOOK, "§eZum Archiv"));
+        inventory.setItem(53, builder.createItem(Material.BARRIER, "§eZurück zum Hautpmenu"));
         player.openInventory(inventory);
     }
 

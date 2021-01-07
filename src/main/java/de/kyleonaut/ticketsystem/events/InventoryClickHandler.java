@@ -128,6 +128,12 @@ public class InventoryClickHandler implements Listener {
             } else {
                 return;
             }
+        } else if (event.getInventory().getTitle().equalsIgnoreCase("Ticket Moderation [Gefiltert]")) {
+            if (event.getSlot() == 53) {
+                InventoryHolder.openMainModerationGui((Player) event.getWhoClicked());
+            } else {
+                return;
+            }
         }
     }
 
