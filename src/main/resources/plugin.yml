@@ -14,7 +14,7 @@ commands:
       - th
   tickets:
     description: Get a Overview of all your open Tickets
-description: This Plugin is a Easy2Use Ticketsystem coded by kyleonaut and Sheldor003.
+description: This Plugin is a Easy2Use Ticketsystem coded by kyleonaut.
 permissions:
   ticketsystem:
     moderation:
